@@ -1,0 +1,133 @@
+v2.4.1 - Hotfix for a rare Segmentation Fault crash in Gigahorse plot backend
+========================================================================
+- Fixed an abrupt crash occurring sometimes following a "Segmentation Fault (Core Dumped)"
+  message when farming with the Gigahorse plot backend.
+
+v2.4.0 - A large maintenance release containing a lot of fixes and improvements
+========================================================================
+- Added support for the Chinese region (cn). You may now specify `cn` in your config
+  if you want to use it.
+- Fixed large memory/OS thread footprint when farming with Gigahorse plot backend.
+- Removed stealth networking features originally introduced in v2.0.2 and replaced
+  them with a more lightweight solution to avoid common blockage, which includes
+  the Chinese Great Firewall (GFW).
+- FlexFarmer will now warn you if an unknown configuration directive is found.
+- Fixed a regression that made it impossible to farm with a local self-hosted node with
+  FlexFarmer version v2.3.0 and higher until this release.
+
+v2.3.2 - Maintenance release containing small fixes and improvements
+========================================================================
+- Fixed DNS-over-HTTPS not working properly behind the Chinese Great Firewall.
+- FlexFarmer will now tell you that Gigahorse plot backend is available on Linux only if
+  you try running it on unsupported OS/Arch.
+- Fixed error handling for Gigahorse plot backend. Previously, it was showing random bytes
+  as an error message.
+- FlexFarmer will now show the plotting address to be used on startup. This is useful if
+  you don't have a synced node to view it in the PlotNFT dashboard.
+
+v2.3.1 - Maintenance release with several minor fixes and improvements
+========================================================================
+- Hardened against another round of Chinese Great Firewall blockage. FlexFarmer will now work perfectly
+  fine under harsh network censoring.
+- Better error message indicating that the OS/Arch does not support Gigahorse plots.
+
+v2.3.0 - Support for Gigahorse Compressed Plots (up to +47.2% income boost)
+========================================================================
+- Added support for Gigahorse plots. With Gigahorse plots, a fee of 3% for GPU and 1.5% for CPU is charged.
+- Minor fixes and enhancements.
+
+v2.2.0 Release - Major upgrade with new features
+========================================================================
+
+- Direct I/O integration, enabled by default (not supported on Solaris and OpenBSD).
+- Ability to farm using a self-hosted node, configured with `self_hosted_node_url` configuration directive.
+- Added sequential plot load mode with optional per-drive delay. Please see example configuration for more info.
+- Updated end user license agreement (covers all previous versions too).
+- Fixed stealth networking features not working properly or triggering certain firewall systems.
+- Fixed issues running large farms on macOS.
+- Upgraded fsnotify for improved plot hot reload performance.
+- Minor bug fixes.
+
+v2.1.0 Release - Maintenance update with a couple features
+========================================================================
+- Added unified US region. Config values `us-east` and `us-west` are now aliased to `us`.
+- All HDD-related Prometheus metrics are now exported with `dir` label, allowing you to closely monitor single drives separately.
+- Fixed filesystem watcher errors on Windows.
+- Tidied logging, added comments to common error logs hinting the issue.
+- Upgraded Go version to 1.19.
+
+v2.0.3 Release - Log file level and fixes
+========================================================================
+- Implemented ability to select the log level for the log file. This is done by using the `log_file_level`
+configuration directive. The default is set to `info`.
+- Fixed hot plot removal not working.
+
+v2.0.2 Release - Stealth Networking Features & Improvements
+========================================================================
+- Implemented Stealth Networking features as a solution to recent blockage made by Chinese ISPs. These
+  features include DNS over HTTPS (DoH) and no-SNI TLS. They are enabled by default, but you always can
+  disable them by specifying `disable_stealth_networking: true` in your config.yml file.
+- Introduced a concurrency limiter in FlexFarmer initial plot load. Prior to this release, FlexFarmer
+  could fail because of creating too many threads and/or opening more files than ulimit allows.
+  The default concurrency limit is 1024 threads, that can be configured by `max_async_plot_load_threads`.
+- If hot plot load has failed because of EOF error (occurs during copying the plot), FlexFarmer will
+  try to load it again in 30 seconds. No need to rename the plot to .tmp in order to copy plots now.
+- Notifications! Currently only Discord webhooks are supported, with plans to extend the coverage in
+  the future (suggestions are welcome).
+- Now FlexFarmer will not skip the first signage point.
+- Since people don't check the Get Started downloads page often, FlexFarmer will now check if a newer
+  version is available on startup, and notify you if so.
+- Other minor fixes & improvements.
+
+v2.0.1 Release - Addressing 2.0 issues
+========================================================================
+- Windows instability was fixed.
+- Reported space is no longer raising without a reason.
+- k33 and higher size plots are now working.
+- Added block win easter egg.
+
+v2.0.0 Release - Major upgrade under the hood
+========================================================================
+In this release, we have moved from the Chiapos C++ implementation provided by Chia developers
+to our very own optimized Chiapos implementation written in Go. Reference C++ implementation
+was giving a lot of problems to us. With the move towards our own Chiapos Go implementation,
+we are happy to provide a list of improvements:
+- Lookup times are minimized by up to 2x depending on your hardware configuration. RPi and other
+  embedded users will see the most significant improvement since improvements we've made target
+  low to mid range hardware. If you were using Xeon/EPYC servers for farming, you will see only
+  a minor performance boost.
+- No more "unknown pc" crashes and segmentation faults caused by the reference C++ Chiapos
+  implementation.
+- FlexFarmer executable is now statically-linked, which means that you won't need a specific
+  version of glibc and other libraries. All now is bundled to the FlexFarmer binary. (You can
+  run FlexFarmer under ancient CentOS 7 now).
+  - FlexFarmer now supports all OSes and architectures supported by Golang. OSes supported
+  include Linux, macOS, Windows, FreeBSD, OpenbSD, NetBSD, and even Solaris! We also support
+  a numerous amount of architectures, including native 32-bit systems (no need to use qemu to
+  emulate 64-bit OS on RPi Zero from now). To extend FlexFarmer ecosystem, we also provide binaries
+  for embedded architectures like MIPS (all derivatives), and RISC-V (64 bit), and some other exotic
+  architectures like ppc (PowerPC) and s390x (System/360), just because we can :D.
+- Additionally, FlexFarmer is no longer crashing when a plot that has been in use by FlexFarmer was deleted.
+
+v1.1.0 Release
+========================================================================
+- Advanced healthcheck-based failover that delegates to https://<REGION_ENDPOINT>/healthy. 
+  This failover covers 100% of possible infrastructure-wide incidents (includes issues with the Chia node).
+- Only a single plot is being added/removed if there is a change in the plot set.
+- Instant plot hot-reload via fsnotify. (`plot_recheck_interval` directive in the config is no longer effective).
+- Fixed Windows AntiVirus software flagging FlexFarmer as malicious:
+    - UPX binary compression was removed
+    - Debug info is now included to the FlexFarmer binary.
+- Fail if no plots are available.
+- Fixed possible panics during concurrent block submission.
+
+v1.0.1 Release
+========================================================================
+- Fixed farmer public key serialization data race that caused occasional false wrong plot farmer public key errors.
+- Fixed wrong farmer secret key extraction that affected ~1.2% of mnemonics.
+- Do not compute plot directories hash of unaccessible directories (lost+found, System Volume Information, $RECYCLE.BIN, etc.)
+
+v1.0.0 Release
+========================================================================
+
+(initial release) 
