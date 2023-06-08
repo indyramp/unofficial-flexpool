@@ -1,0 +1,15 @@
+FlexFarmer API
+========================================================================
+
+GET /stats
+
+Returns JSON Object with fields:
+    - `acceptedPartials` - Amount of accepted partials since the farmer startup
+    - `rejectedPartials` - Amount of rejected partials since the farmer startup
+    - `space` - Total size of loaded plots (in bytes)
+    - `spaceEffective` - Total effective size of loaded plots (in bytes)
+    - `plots` - Amount of plots loaded
+    - `poolDifficulty` - Difficulty on the pool
+    - `processedSignagePoints` - Amount of processed signage points since the farmer startup
+    - `foundBlocks` - Amount of found blocks since the farmer startup
+    - `averageLookupDuration` - Average duration of I/O proof lookups (Qualities + Full proof)
