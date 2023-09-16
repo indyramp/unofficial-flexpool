@@ -49,7 +49,7 @@ FAQ
 
   No.
 
-- Can my XCH be stolen with the secret key?
+- Can my XCH be stolen using the farmer secret key?
 
   Short answer: No. Long answer, only 0.25 XCH farmer reward can be stolen,
   and only if the hacker is having access to both your farmer secret key,
@@ -57,7 +57,7 @@ FAQ
   All this also assumes that the hacker will be able to intercept the block
   before it was sent to other nodes.
 
-- In case if a certain Flexpool.io region is having issues, will my farm failover to another region?
+- In case if a certain Flexpool.io region is having issues, will my farm fail over to another region?
 
   Yes. FlexFarmer has a built-in automatic failover system that will try to
   connect to neighbor regions in case if something is wrong with the

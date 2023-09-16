@@ -37,3 +37,4 @@ payout_address: xch1fh6f088cxcvqscy4xtxfq7762vhsh9mjcql6m3svfhmlxsc3jd4sd37xdl  
 # disable_direct_io: <true/false> # Disable Direct I/O when farming (this can lead to increased CPU and Memory footprint, and increased lookup times) [default: false]
 # gigahorse:
 #   disable_hw: <true/false> # Disable hardware acceleration (GPU) for Gigahorse plots. If enabled, FlexFarmer will use CPU only.
+#   remote_addr: <host:port> # Specify remote recompute server address to use. You can specify multiple servers separated by comma (,).
